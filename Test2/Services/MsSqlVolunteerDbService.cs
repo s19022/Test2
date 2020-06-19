@@ -20,20 +20,29 @@ namespace Test2.Services
 
         public GetPetsResponse GetPets(GetPetsRequest request)
         {
-            var response = new GetPetsResponse()
-            {
-                Pets = new List<PetResponse>()
-            };
+           
 
             if (_context.Volunteer.Where(v => v.IdVolunteer == request.IdVolunteer).Count() != 1)
                 throw new NoSuchVolunteerException("No volunteer with id " + request.IdVolunteer + " found");
 
-            _context.Volunteer.Join(_context.Volunteer_Pet,
-                vol => vol.IdVolunteer,
-                vol_pet => vol_pet.IdVolunteer,
-                (vol, vol_pet) => new { vol.IdVolunteer, vol_pet.IdPet});
+           var res =  _context.Volunteer_Pet.Where(v_p => v_p.IdVolunteer == request.IdVolunteer 
+           &&((v_p.DateAccepted.Year > request.Year) ||(request.Year == 0))
+           ).Join(_context.Pet,
+                v_p => v_p.IdPet,
+                pet => pet.IdPet,
+                (v_p, pet) => new PetResponse
+                {
+                    IdPet = pet.IdPet,
+                    IdBreedType = pet.IdBreedType,
+                    IsMale = pet.IsMale,
+                    DateAdopted = pet.DateAdopted,
+                    Name = pet.Name,
+                    ApprocimateDateOfBirth = pet.ApprocimateDateOfBirth,
+                    DateRegistred = pet.DateRegistred,
+                    Age = DateTime.Now.Year - pet.ApprocimateDateOfBirth.Year
+                }).ToList();
 
-            return response;
+            return new GetPetsResponse() { Pets = res};
         }
 
         public void AssignPetToVolunteer(AssignPetRequest request)
