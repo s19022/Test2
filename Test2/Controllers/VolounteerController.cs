@@ -49,8 +49,17 @@ namespace Test2.Controllers
                 _dbService.AssignPetToVolunteer(request);
             }catch(NoSuchVolunteerException ex)
             {
-                
+                return BadRequest(ex.Message);    
             }
+            catch (NoSuchPetException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (VolunteerAlreadyHasSupervisporException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
 
             return Ok();
         }
