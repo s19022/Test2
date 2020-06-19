@@ -14,6 +14,8 @@ namespace Test2.Models
 
         public DbSet<Volunteer> Volunteer { get; set; }
 
+        public DbSet<Volunteer_Pet> Volunteer_Pet { get; set; }
+
         public MyContext()
         {
 

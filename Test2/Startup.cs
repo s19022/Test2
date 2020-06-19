@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Test2.Models;
+using Test2.Services;
 
 namespace Test2
 {
@@ -32,6 +33,7 @@ namespace Test2
                 options.UseSqlServer("Data Source=db-mssql;Initial Catalog=s19022;Integrated Security=True");
             });
             services.AddControllers();
+            services.AddTransient<IVolunteerDbService, MsSqlVolunteerDbService>();
         }
 
 

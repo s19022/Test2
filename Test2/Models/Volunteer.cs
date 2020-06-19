@@ -10,7 +10,7 @@ namespace Test2.Models
     public class Volunteer
     {
         [Key]
-        public int IdVoluenteer { get; set; }
+        public int IdVolunteer { get; set; }
 
         public int? IdSupervisor { get; set; }
 
